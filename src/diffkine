@@ -14,9 +14,9 @@ if __name__ == '__main__':
     # Publisher: publish to the joint_states topic
     pub = rospy.Publisher('joint_states', JointState, queue_size=10)
     # Files for the logs
-    fxcurrent = open("/home/benja/proy_funda/src/kuka_iiwa_description/src/xcurrent.txt", "w")                
-    fxdesired = open("/home/benja/proy_funda/src/kuka_iiwa_description/src/xdesired.txt", "w")
-    fq = open("/home/benja/proy_funda/src/kuka_iiwa_description/src/q.txt", "w")
+    fxcurrent = open("/home/benja/proy_funda/src/kuka_iiwa_description/src/diffkine_graph/xcurrent.txt", "w")                
+    fxdesired = open("/home/benja/proy_funda/src/kuka_iiwa_description/src/diffkine_graph/xdesired.txt", "w")
+    fq = open("/home/benja/proy_funda/src/kuka_iiwa_description/src/diffkine_graph/q.txt", "w")
 
     # Markers for the current and desired positions
     bmarker_current  = BallMarker(color['RED'])
