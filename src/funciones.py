@@ -219,54 +219,40 @@ def TF2xyzquat(T):
  res = [T[0,3], T[1,3], T[2,3], quat[0], quat[1], quat[2], quat[3]]
  return np.array(res)
 
-def jacobian_pose(q, delta=0.0001):
+def jacobian_pose(q, delta=0.001):
  """
  Jacobiano analitico para la posicion y orientacion (usando un
  cuaternion). Retorna una matriz de 7xn y toma como entrada el vector de
  configuracion articular q=[q1, q2, q3, ..., qn]
  """
+
  n = q.size
- J = np.zeros((7, n))
- T = fkine_kuka(q)
-    
- for i in range(n):
-  dq = copy(q)
-  dq[i] += delta
-  T_inc = fkine_kuka(dq)
-  J[0:7, i] = (TF2xyzquat(T_inc) - TF2xyzquat(T)) / delta
+ J = np.zeros((7,n))
+ # Posición en la configuración q
+ Th = fkine_kuka(q)
+ x = Th[0:3,3]  # NECESITO LA CINEMÁTICA DIRECTA
+ ori = Th[0:3,0:3]  # NECESITO LA ORIENTACIÓN
+ rot = Quaternion(matrix=ori)
+ rot = np.array([rot.w, rot.x, rot.y, rot.z])
+ des = np.hstack((x,rot))
 
-  n = q.size
-  J = np.zeros((7,n))
-  # Posición en la configuración q
-  Th = fkine_kuka(q)
-  x = Th[0:3,3]  # NECESITO LA CINEMÁTICA DIRECTA
-  ori = Th[0:3,0:3]  # NECESITO LA ORIENTACIÓN
-  rot = Quaternion(matrix=ori)
-  rot = np.array([rot.w, rot.x, rot.y, rot.z])
-  des = np.hstack((x,rot))
+ # Iteraciones para las derivadas columna por columna
+ for i in range(8):
+   # Copiar la configuracion articular inicial (importante)
+   dq = np.copy(q)
+   # Incrementar la articulacion i-esima usando un delta: qi+delta
+   dq[i] = dq[i] + delta
+   # Posición luego del incremento (con qi+delta)
+   dTh = fkine_kuka(dq)
+   dx = dTh[0:3,3]
+   ori2 = dTh[0:3,0:3]
+   drot = Quaternion(matrix=ori2)
+   drot = np.array([drot.w, drot.x, drot.y, drot.z])
+   act = np.hstack((dx,drot))
 
-  # Iteraciones para las derivadas columna por columna
-  for j in range(8):
-  # Copiar la configuracion articular inicial (importante)
-    dq = np.copy(q)
-  # Incrementar la articulacion i-esima usando un delta: qi+delta
-    dq[j] = dq[j] + delta
-  # Posición luego del incremento (con qi+delta)
-    dTh = fkine_kuka(dq)
-    dx = dTh[0:3,3]
-    ori2 = dTh[0:3,0:3]
-    drot = Quaternion(matrix=ori2)
-    drot = np.array([drot.w, drot.x, drot.y, drot.z])
-    act = np.hstack((dx,drot))
+   col = PoseError(act,des)
+   J[:,i] = col
 
-  # Columna i usando diferencias finitas
-  columna_i_sup = 1/delta * (dx-x)
-  columna_i_inf = 1/delta * (drot-rot)
-  # Almacenamiento de la columna i
-  col = np.hstack((columna_i_sup, columna_i_inf))
-  #col = PoseError(act,des)
-  J[:,i] = col
-    
  return J
 
 def PoseError(x,xd):
