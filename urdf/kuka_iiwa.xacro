@@ -1,0 +1,254 @@
+<?xml version="1.0" ?>
+<robot name="kuka_iiwa" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find kuka_iiwa_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find kuka_iiwa_description)/urdf/kuka_iiwa.trans" />
+<xacro:include filename="$(find kuka_iiwa_description)/urdf/kuka_iiwa.gazebo" />
+
+<link name="base_link">
+  <inertial>
+    <origin xyz="-0.012820903814013492 0.0051115182659933955 0.0663962675807908" rpy="0 0 0"/>
+    <mass value="42.988933075786555"/>
+    <inertia ixx="0.190409" iyy="0.262819" izz="0.242056" ixy="0.005311" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0.066396 0" rpy="1.57 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0.066396 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link1_1">
+  <inertial>
+    <origin xyz="0.000513388107313499 0.13240338561657816 -0.03379169086163242" rpy="0 0 0"/>
+    <mass value="32.25255782169743"/>
+    <inertia ixx="0.258907" iyy="0.096765" izz="0.261201" ixy="-0.000587" iyz="0.038662" ixz="-3.5e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.0 -0.081105 -0.066396" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/link1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.0 -0.081105 -0.066396" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/link1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link2_1">
+  <inertial>
+    <origin xyz="0.006790637041771156 0.05831151747503188 0.0520962364811052" rpy="0 0 0"/>
+    <mass value="31.02033485964618"/>
+    <inertia ixx="0.237289" iyy="0.08923" izz="0.238957" ixy="-0.020857" iyz="0.037692" ixz="0.005198"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.000152 -0.293605 -0.056397" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/link2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.000152 -0.293605 -0.056397" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/link2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link3_1">
+  <inertial>
+    <origin xyz="0.01839183607817021 0.1351938119333524 0.029831502276860905" rpy="0 0 0"/>
+    <mass value="24.92491724179464"/>
+    <inertia ixx="0.194363" iyy="0.062404" izz="0.186753" ixy="-0.018427" iyz="-0.038158" ixz="-0.005218"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.025571 -0.486416 -0.066784" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/link3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.025571 -0.486416 -0.066784" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/link3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link4_1">
+  <inertial>
+    <origin xyz="-0.0005772979947998233 0.06759793289135263 -0.04449035667683612" rpy="0 0 0"/>
+    <mass value="21.504431474954778"/>
+    <inertia ixx="0.135046" iyy="0.048366" izz="0.128521" ixy="-0.000462" iyz="-0.022671" ixz="-0.00013"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.055377 -0.709916 -0.077734" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/link4_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.055377 -0.709916 -0.077734" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/link4_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link5_1">
+  <inertial>
+    <origin xyz="2.8597556973354588e-05 0.08555414137410255 -0.021046066685368535" rpy="0 0 0"/>
+    <mass value="13.295939170769604"/>
+    <inertia ixx="0.079127" iyy="0.034891" izz="0.068511" ixy="0.000187" iyz="0.024126" ixz="-8.6e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.055471 -0.884457 -0.067931" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/link5_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.055471 -0.884457 -0.067931" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/link5_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link6_1">
+  <inertial>
+    <origin xyz="0.0007170658959562148 0.0199124845020473 0.07105460912496495" rpy="0 0 0"/>
+    <mass value="17.271121217368332"/>
+    <inertia ixx="0.072656" iyy="0.033094" izz="0.07103" ixy="1.9e-05" iyz="0.001862" ixz="-1.6e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.055085 -1.110238 0.001864" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/link6_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.055085 -1.110238 0.001864" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/link6_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link7_1">
+  <inertial>
+    <origin xyz="-5.067843141224465e-05 0.07271160190383918 0.00029667254133505794" rpy="0 0 0"/>
+    <mass value="3.59003708727431"/>
+    <inertia ixx="0.004896" iyy="0.003889" izz="0.004895" ixy="6e-06" iyz="-5e-06" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.055801 -1.181054 -0.069117" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/link7_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.055801 -1.181054 -0.069117" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/link7_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="end_link_1">
+  <inertial>
+    <origin xyz="-0.00016848294005620407 0.027313835797532215 9.298551248301812e-05" rpy="0 0 0"/>
+    <mass value="2.4567876231793395"/>
+    <inertia ixx="0.001756" iyy="0.002723" izz="0.001778" ixy="3e-06" iyz="4e-06" ixz="1e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.057084 -1.281054 -0.069383" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/end_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.057084 -1.281054 -0.069383" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://kuka_iiwa_description/meshes/end_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="base_link__link1" type="continuous">
+  <origin xyz="0.0 0 0.081105" rpy="1.57 0 0"/>
+  <parent link="base_link"/>
+  <child link="link1_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+</joint>
+
+<joint name="link1__link2" type="continuous">
+  <origin xyz="0.000152 0.2125 -0.009999" rpy="0 0 0"/>
+  <parent link="link1_1"/>
+  <child link="link2_1"/>
+  <axis xyz="0.0 0.0 1.0"/>
+</joint>
+
+<joint name="link2__link3" type="continuous">
+  <origin xyz="0.025419 0.192811 0.010387" rpy="0 0 0"/>
+  <parent link="link2_1"/>
+  <child link="link3_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+</joint>
+
+<joint name="link3__link4" type="continuous">
+  <origin xyz="0.029806 0.2235 0.01095" rpy="0 0 0"/>
+  <parent link="link3_1"/>
+  <child link="link4_1"/>
+  <axis xyz="0.0 0.0 -1.0"/>
+</joint>
+
+<joint name="link4__link5" type="continuous">
+  <origin xyz="9.4e-05 0.174541 -0.009803" rpy="0 0 0"/>
+  <parent link="link4_1"/>
+  <child link="link5_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+</joint>
+
+<joint name="link5__link6" type="continuous">
+  <origin xyz="-0.000386 0.225781 -0.069795" rpy="0 0 0"/>
+  <parent link="link5_1"/>
+  <child link="link6_1"/>
+  <axis xyz="0.0 0.0 1.0"/>
+</joint>
+
+<joint name="link6__link7" type="prismatic">
+  <origin xyz="0.000716 0.070816 0.070981" rpy="0 0 0"/>
+  <parent link="link6_1"/>
+  <child link="link7_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+  <limit upper="0.0" lower="0.0" effort="100" velocity="100"/>
+</joint>
+
+<joint name="link7__end_link" type="continuous">
+  <origin xyz="0.001283 0.1 0.000266" rpy="0 0 0"/>
+  <parent link="link7_1"/>
+  <child link="end_link_1"/>
+  <axis xyz="0.0 -1.0 0.0"/>
+</joint>
+
+</robot>
