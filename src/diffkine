@@ -21,6 +21,7 @@ if __name__ == '__main__':
     # Markers for the current and desired positions
     bmarker_current  = BallMarker(color['RED'])
     bmarker_desired = BallMarker(color['GREEN'])
+    marker = FrameMarker()
 
     # Joint names
     jnames = ['base_link__link1', 'link1__link2','link2__link3', 'link3__link4', 'link4__link5','link5__link6','link6__link7','link7__end_link']
@@ -28,9 +29,9 @@ if __name__ == '__main__':
     # Desired position
     #xd = np.array([0.84, 0.125, 0.249])
     #xd = np.array([0.44, 0.22, 0.5])
-    xd = np.array([-0.44, 0.4, 0.6])
+    xd = np.array([0.6, -0.5, 0.6, 0.0, 1.0, 0.0, 0.0])
     # Initial configuration
-    q0 = np.array([0.4, 0.2, 0.6, -0.1, -0.5, 0.05, 0.05, 0.2])
+    q0 = np.array([0.4, 0.2, 0.6, -0.1, -0.5, 0.1, 0.05, 0.2])
     #q0 = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     #q0 = np.array([0.8, 1.0, 0.8, 0.6, 0.8, 0.5, 0.0, 0.6])
     # Resulting initial position (end effector with respect to the base link)
@@ -40,7 +41,9 @@ if __name__ == '__main__':
     # Red marker shows the achieved position
     bmarker_current.xyz(x0)
     # Green marker shows the desired position
-    bmarker_desired.xyz(xd)
+    bmarker_desired.xyz(xd[0:3])
+
+    marker.setPose(xd[0:3])
 
     # Instance of the JointState message
     jstate = JointState()
@@ -57,7 +60,7 @@ if __name__ == '__main__':
 
     # Initial joint configuration
     q = copy(q0)
-    k = 1.2
+    k = 0.001
     count = 0
     # Main loop
     while not rospy.is_shutdown():
@@ -78,7 +81,7 @@ if __name__ == '__main__':
         J = jacobian_pose(q)
         
         # Verificar si la posición deseada se alcanzó
-        if np.linalg.norm(e) < 0.001:
+        if np.linalg.norm(e[0:3]) < 0.001:
             print("Posición deseada alcanzada.")
             break
         
@@ -88,6 +91,7 @@ if __name__ == '__main__':
         dq = np.linalg.pinv(J).dot(de)
         # Integración para obtener la nueva configuración articular
         q = q + dt*dq
+        q[6] = np.clip(q[6], 0.0, 0.071)
         # Actualizar las articulaciones
         # -----------------------------
         count = count + 1 
@@ -105,6 +109,7 @@ if __name__ == '__main__':
         pub.publish(jstate)
         bmarker_desired.xyz(xd)
         bmarker_current.xyz(x)
+        marker.publish()
         # Wait for the next iteration
         rate.sleep()
 
