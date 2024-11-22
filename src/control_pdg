@@ -15,10 +15,10 @@ if __name__ == '__main__':
   bmarker_actual  = BallMarker(color['RED'])
   bmarker_deseado = BallMarker(color['GREEN'])
   # Archivos donde se almacenara los datos
-  fxcurrent = open("/home/benja/proy_funda/src/kuka_iiwa_description/src/xcurrent.txt", "w")                
-  fxdesired = open("/home/benja/proy_funda/src/kuka_iiwa_description/src/xdesired.txt", "w")
-  fqcurrent = open("/home/benja/proy_funda/src/kuka_iiwa_description/src/qcurrent.txt", "w")
-  fqdesired = open("/home/benja/proy_funda/src/kuka_iiwa_description/src/qdesired.txt", "w")
+  fxcurrent = open("/home/benja/proy_funda/src/kuka_iiwa_description/src/control_pdg_graph/xcurrent.txt", "w")                
+  fxdesired = open("/home/benja/proy_funda/src/kuka_iiwa_description/src/control_pdg_graph/xdesired.txt", "w")
+  fqcurrent = open("/home/benja/proy_funda/src/kuka_iiwa_description/src/control_pdg_graph/qcurrent.txt", "w")
+  fqdesired = open("/home/benja/proy_funda/src/kuka_iiwa_description/src/control_pdg_graph/qdesired.txt", "w")
   
   # Nombres de las articulaciones
   jnames = ['base_link__link1', 'link1__link2','link2__link3', 'link3__link4', 'link4__link5','link5__link6','link6__link7','link7__end_link']
@@ -30,11 +30,11 @@ if __name__ == '__main__':
   
   # =============================================================
   # Configuracion articular inicial (en radianes)
-  q = np.array([0.4, 0.2, 0.6, -0.1, -0.5, 0.1, 0.05, 0.2])
+  q = np.array([0.4, 0.2, 0.6, -0.1, -0.5, 0.1, 0.07, 0.2])
   # Velocidad inicial
   dq = np.array([0., 0., 0., 0., 0., 0., 0., 0.])
   # Configuracion articular deseada
-  qdes = np.array([1.0, -1.0, 1.0, 1.3, -1.5, 1.0, 0.0, -0.3])
+  qdes = np.array([1.0, -0.4, 0.5, 0.4, -0.5, 0.3, 0.0, -0.3])
   # =============================================================
   
   # Posicion resultante de la configuracion articular deseada
@@ -58,7 +58,7 @@ if __name__ == '__main__':
   # Se definen las ganancias del controlador
   valores = 0.1*np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
   Kp = np.diag(valores)
-  Kd = 0.2*np.sqrt(Kp)
+  Kd = 0.35*np.sqrt(Kp)
   
   # Bucle de ejecucion continua
   t = 0.0
@@ -73,10 +73,10 @@ if __name__ == '__main__':
     jstate.header.stamp = rospy.Time.now()
 
     # Almacenamiento de datos
-    fxcurrent.write(str(t)+' '+str(x[0])+' '+str(x[1])+' '+str(x[2])+'\n')
-    fxdesired.write(str(t)+' '+str(xdes[0])+' '+str(xdes[1])+' '+str(xdes[2])+'\n')
-    fqcurrent.write(str(t)+' '+str(q[0])+' '+str(q[1])+' '+ str(q[2])+' '+ str(q[3])+' '+str(q[4])+' '+str(q[5])+'\n ')
-    fqdesired.write(str(t)+' '+str(qdes[0])+' '+str(qdes[1])+' '+ str(qdes[2])+' '+ str(qdes[3])+' '+str(qdes[4])+' '+str(qdes[5])+'\n ')
+    fxcurrent.write(str(x[0])+' '+str(x[1])+' '+str(x[2])+'\n')
+    fxdesired.write(str(xdes[0])+' '+str(xdes[1])+' '+str(xdes[2])+'\n')
+    fqcurrent.write(str(q[0])+' '+str(q[1])+' '+ str(q[2])+' '+ str(q[3])+' '+str(q[4])+' '+str(q[5])+' '+str(q[6])+' '+str(q[7])+'\n ')
+    fqdesired.write(str(qdes[0])+' '+str(qdes[1])+' '+ str(qdes[2])+' '+ str(qdes[3])+' '+str(qdes[4])+' '+str(qdes[5])+' '+str(q[6])+' '+str(q[7])+'\n ')
 
     # ----------------------------
     # Control dinamico (COMPLETAR)
@@ -85,6 +85,7 @@ if __name__ == '__main__':
 
     zeros = np.zeros(ndof)  #Vector de ceros
     g_1    = np.zeros(ndof)
+    q[6] = np.clip(q[6], 0.0, 0.071)
     rbdl.InverseDynamics(modelo, q, zeros, zeros, g_1)  # Vector de gravedad
    
     g_1 = np.round(g_1,4)
