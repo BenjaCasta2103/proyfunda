@@ -27,9 +27,9 @@ if __name__ == '__main__':
     jnames = ['base_link__link1', 'link1__link2','link2__link3', 'link3__link4', 'link4__link5','link5__link6','link6__link7','link7__end_link']
 
     # Desired position
-    #xd = np.array([0.84, 0.125, 0.249])
-    #xd = np.array([0.44, 0.22, 0.5])
-    xd = np.array([0.6, -0.5, 0.6, 0.0, 1.0, 0.0, 0.0])
+    xd = np.array([0.84, 0.125, 0.249, 0.0, 1.0, 0.0, 0.0])
+    #xd = np.array([0.44, 0.22, 0.5, 0.0, 1.0, 0.0, 0.0])
+    #xd = np.array([0.6, -0.5, 0.6, 0.0, 1.0, 0.0, 0.0])
     # Initial configuration
     q0 = np.array([0.4, 0.2, 0.6, -0.1, -0.5, 0.1, 0.05, 0.2])
     #q0 = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
     # Initial joint configuration
     q = copy(q0)
-    k = 0.001
+    k = 0.5
     count = 0
     # Main loop
     while not rospy.is_shutdown():
@@ -78,15 +78,15 @@ if __name__ == '__main__':
         e = PoseError(x,xd)  # Error de posición
 
         # Calcular la Jacobiana (matriz de derivadas) del robot en la posición actual
-        J = jacobian_pose(q)
+        J = jacobian(q)
         
         # Verificar si la posición deseada se alcanzó
-        if np.linalg.norm(e[0:3]) < 0.001:
+        if np.linalg.norm(e[0:3]) < 0.01:
             print("Posición deseada alcanzada.")
             break
         
         # Derivada del error
-        de = -k*e
+        de = -k*e[0:3]
         # Variación de la configuración articular
         dq = np.linalg.pinv(J).dot(de)
         # Integración para obtener la nueva configuración articular
@@ -95,8 +95,8 @@ if __name__ == '__main__':
         # Actualizar las articulaciones
         # -----------------------------
         count = count + 1 
-        if(count > 1000):
-            print('Max number of iterations reached')
+        if(count > 10000):
+            print('Máximo número de iteraciones alcanzado.')
             break
         
         # Log values                                                      
@@ -107,8 +107,8 @@ if __name__ == '__main__':
         # Publish the message
         jstate.position = q
         pub.publish(jstate)
-        bmarker_desired.xyz(xd)
-        bmarker_current.xyz(x)
+        bmarker_desired.xyz(xd[0:3])
+        bmarker_current.xyz(x[0:3])
         marker.publish()
         # Wait for the next iteration
         rate.sleep()
