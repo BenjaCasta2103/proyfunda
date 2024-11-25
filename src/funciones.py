@@ -219,25 +219,6 @@ def TF2xyzquat(T):
  res = [T[0,3], T[1,3], T[2,3], quat[0], quat[1], quat[2], quat[3]]
  return np.array(res)
 
-def PoseError(x,xd):
- """
- Determine the pose error of the end effector.
-
- Input:
- x -- Actual position of the end effector, in the format [x y z ew ex ey ez]
- xd -- Desire position of the end effector, in the format [x y z ew ex ey ez]
- Output:
- err_pose -- Error position of the end effector, in the format [x y z ew ex ey ez]
- """
- pos_err = x[0:3]-xd[0:3]
- qact = Quaternion(x[3:7])
- qdes = Quaternion(xd[3:7])
- #qdif = qdes*qact.inverse
- qdif = qdes*(qact.w,-qact.x, -qact.y, -qact.z)
- qua_err = np.array([qdif.w,qdif.x,qdif.y,qdif.z])
- err_pose = np.hstack((pos_err,qua_err))
- return err_pose
-
 class Robot(object):
     def __init__(self, q0, dq0, ndof, dt):
         self.q = q0    # numpy array (ndof x 1)
