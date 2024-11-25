@@ -34,7 +34,7 @@ if __name__ == '__main__':
   # Velocidad inicial
   dq = np.array([0., 0., 0., 0., 0., 0., 0., 0.])
   # Configuracion articular deseada
-  qdes = np.array([1.0, -0.4, 0.5, 0.4, -0.5, 0.3, 0.0, -0.3])
+  qdes = np.array([1.0, -0.2, 0.1, 0.4, -0.0, 0.3, 0.0, -0.3])
   # =============================================================
   
   # Posicion resultante de la configuracion articular deseada
@@ -48,7 +48,7 @@ if __name__ == '__main__':
   ndof   = modelo.q_size     # Grados de libertad
   
   # Frecuencia del envio (en Hz)
-  freq = 20
+  freq = 50
   dt = 1.0/freq
   rate = rospy.Rate(freq)
   
@@ -56,9 +56,9 @@ if __name__ == '__main__':
   robot = Robot(q, dq, ndof, dt)
 
   # Se definen las ganancias del controlador
-  valores = 0.1*np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+  valores = 1*np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
   Kp = np.diag(valores)
-  Kd = 0.35*np.sqrt(Kp)
+  Kd = 0.26*np.sqrt(Kp)
   
   # Bucle de ejecucion continua
   t = 0.0
