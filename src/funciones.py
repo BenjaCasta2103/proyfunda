@@ -219,42 +219,6 @@ def TF2xyzquat(T):
  res = [T[0,3], T[1,3], T[2,3], quat[0], quat[1], quat[2], quat[3]]
  return np.array(res)
 
-def jacobian_pose(q, delta=0.001):
- """
- Jacobiano analitico para la posicion y orientacion (usando un
- cuaternion). Retorna una matriz de 7xn y toma como entrada el vector de
- configuracion articular q=[q1, q2, q3, ..., qn]
- """
-
- n = q.size
- J = np.zeros((7,n))
- # Posición en la configuración q
- Th = fkine_kuka(q)
- x = Th[0:3,3]  # NECESITO LA CINEMÁTICA DIRECTA
- ori = Th[0:3,0:3]  # NECESITO LA ORIENTACIÓN
- rot = Quaternion(matrix=ori)
- rot = np.array([rot.w, rot.x, rot.y, rot.z])
- des = np.hstack((x,rot))
-
- # Iteraciones para las derivadas columna por columna
- for i in range(8):
-   # Copiar la configuracion articular inicial (importante)
-   dq = np.copy(q)
-   # Incrementar la articulacion i-esima usando un delta: qi+delta
-   dq[i] = dq[i] + delta
-   # Posición luego del incremento (con qi+delta)
-   dTh = fkine_kuka(dq)
-   dx = dTh[0:3,3]
-   ori2 = dTh[0:3,0:3]
-   drot = Quaternion(matrix=ori2)
-   drot = np.array([drot.w, drot.x, drot.y, drot.z])
-   act = np.hstack((dx,drot))
-
-   col = PoseError(act,des)
-   J[:,i] = col
-
- return J
-
 def PoseError(x,xd):
  """
  Determine the pose error of the end effector.
